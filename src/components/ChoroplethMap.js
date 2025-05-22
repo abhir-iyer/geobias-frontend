@@ -1,4 +1,5 @@
 import React from 'react';
+import Plot from 'react-plotly.js';
 
 export default function ChoroplethMap({ data }) {
   if (!data || data.length === 0) return null;
