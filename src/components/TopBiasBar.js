@@ -1,18 +1,22 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import createPlotlyComponent from 'react-plotly.js/factory';
 import Plotly from 'plotly.js-basic-dist';
 
 const Plot = createPlotlyComponent(Plotly);
+const DynamicPlot = dynamic(() => Promise.resolve(Plot), { ssr: false });
 
 export default function TopBiasBar({ data, layoutProps = {}, configProps = {} }) {
   if (!data || data.length === 0) return null;
+
+  console.log("📊 TopBiasBar received data:", data);
 
   const sorted = [...data].sort((a, b) => Math.abs(b.avg_sentiment) - Math.abs(a.avg_sentiment));
   const top10 = sorted.slice(0, 10);
 
   return (
     <div style={{ width: '100%', height: 'auto' }}>
-      <Plot
+      <DynamicPlot
         data={[{
           x: top10.map(d => `${d.source_country} → ${d.target_country}`),
           y: top10.map(d => d.avg_sentiment),
@@ -29,6 +33,7 @@ export default function TopBiasBar({ data, layoutProps = {}, configProps = {} })
         config={{
           displayModeBar: false,
           scrollZoom: false,
+          responsive: true,
           ...configProps
         }}
         style={{ width: '100%', height: '100%' }}
