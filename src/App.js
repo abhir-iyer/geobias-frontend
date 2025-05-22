@@ -18,6 +18,7 @@ function App() {
   const [source, setSource] = useState('All');
   const [target, setTarget] = useState('All');
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   const BASE_URL = 'https://geobias-app.onrender.com';
 
@@ -29,6 +30,10 @@ function App() {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setIsClient(true);
   }, []);
 
   useEffect(() => {
@@ -83,23 +88,27 @@ function App() {
           />
         </div>
 
-        <div className="section lift-on-hover" data-aos="fade-up">
-          <h2>🌍 Sentiment Toward Target Countries (Choropleth)</h2>
-          <p className="insight">See which countries are viewed positively or negatively around the world.</p>
-          <ChoroplethMap data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
-        </div>
+        {isClient && (
+          <>
+            <div className="section lift-on-hover" data-aos="fade-up">
+              <h2>🌍 Sentiment Toward Target Countries (Choropleth)</h2>
+              <p className="insight">See which countries are viewed positively or negatively around the world.</p>
+              <ChoroplethMap data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
+            </div>
 
-        <div className="section lift-on-hover" data-aos="fade-up">
-          <h2>🌡️ Source → Target Country Sentiment Matrix (Heatmap)</h2>
-          <p className="insight">Hover to explore average sentiment between source and target countries.</p>
-          <Heatmap data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
-        </div>
+            <div className="section lift-on-hover" data-aos="fade-up">
+              <h2>🌡️ Source → Target Country Sentiment Matrix (Heatmap)</h2>
+              <p className="insight">Hover to explore average sentiment between source and target countries.</p>
+              <Heatmap data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
+            </div>
 
-        <div className="section lift-on-hover" data-aos="fade-up">
-          <h2>📊 Top 10 Most Biased Country Pairs</h2>
-          <p className="insight">Discover the country pairs with the most polarized sentiment in the dataset.</p>
-          <TopBiasBar data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
-        </div>
+            <div className="section lift-on-hover" data-aos="fade-up">
+              <h2>📊 Top 10 Most Biased Country Pairs</h2>
+              <p className="insight">Discover the country pairs with the most polarized sentiment in the dataset.</p>
+              <TopBiasBar data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
+            </div>
+          </>
+        )}
 
         <div className="section lift-on-hover" data-aos="fade-up">
           <h2>🕸️ Directed News Sentiment Network</h2>
