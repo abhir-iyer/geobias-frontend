@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import Plot from 'react-plotly.js';
 
 import FilterPanel from './components/FilterPanel';
 import ChoroplethMap from './components/ChoroplethMap';
