@@ -10,36 +10,22 @@ export default function TopBiasBar({ data, layoutProps = {}, configProps = {} })
   return (
     <div style={{ width: '100%', height: 'auto' }}>
       <Plot
-        data={[
-          {
-            x: top10.map(d => `${d.source_country} → ${d.target_country}`),
-            y: top10.map(d => d.avg_sentiment),
-            type: 'bar',
-            text: top10.map(d =>
-              `Source: ${d.source_country}<br>Target: ${d.target_country}<br>Sentiment: ${d.avg_sentiment.toFixed(3)}`
-            ),
-            hoverinfo: 'text',
-            marker: { color: 'mediumseagreen' }
-          }
-        ]}
+        data={[{
+          x: top10.map(d => `${d.source_country} → ${d.target_country}`),
+          y: top10.map(d => d.avg_sentiment),
+          type: 'bar',
+          marker: { color: top10.map(d => d.avg_sentiment >= 0 ? '#4caf50' : '#f44336') },
+        }]}
         layout={{
-          margin: { t: 30, b: 80, l: 60, r: 30 },
-          yaxis: { title: 'Avg Sentiment' },
-          xaxis: {
-            title: 'Country Pair',
-            tickangle: -45
-          },
-          autosize: true,
-          hovermode: 'closest',
-          paper_bgcolor: '#ffffff',
-          plot_bgcolor: '#ffffff',
-          ...layoutProps
+          ...layoutProps,
+          margin: { t: 30, b: 40, l: 50, r: 10 },
+          height: 400,
+          paper_bgcolor: '#fff',
+          plot_bgcolor: '#fff'
         }}
         config={{
           displayModeBar: false,
-          responsive: true,
           scrollZoom: false,
-          staticPlot: false,
           ...configProps
         }}
         style={{ width: '100%', height: '100%' }}

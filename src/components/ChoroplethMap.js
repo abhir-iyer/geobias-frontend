@@ -1,8 +1,7 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
-const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
+import Plot from 'react-plotly.js';
 
-export default function ChoroplethMap({ data }) {
+export default function ChoroplethMap({ data, layoutProps = {}, configProps = {} }) {
   if (!data || data.length === 0) return null;
 
   const byTarget = {};
@@ -20,7 +19,7 @@ export default function ChoroplethMap({ data }) {
   const countryList = Object.keys(byTarget);
   const avgSentiment = countryList.map(c => byTarget[c].total / byTarget[c].count);
   const hoverText = countryList.map(
-    c => `${c}<br>Avg Sentiment: ${ (byTarget[c].total / byTarget[c].count).toFixed(3) }`
+    c => `${c}<br>Avg Sentiment: ${(byTarget[c].total / byTarget[c].count).toFixed(3)}`
   );
 
   return (
@@ -39,10 +38,9 @@ export default function ChoroplethMap({ data }) {
           colorbar: { title: 'Avg Sentiment' }
         }]}
         layout={{
-          title: '',
+          ...layoutProps,
           geo: { showframe: false },
           margin: { t: 10, b: 10, l: 0, r: 0 },
-          hovermode: 'closest',
           autosize: true,
           height: 500,
           paper_bgcolor: '#fff',
@@ -50,10 +48,8 @@ export default function ChoroplethMap({ data }) {
         }}
         config={{
           displayModeBar: false,
-          responsive: true,
-          useResizeHandler: true,
           scrollZoom: false,
-          staticPlot: false
+          ...configProps
         }}
         style={{ width: '100%', height: '100%' }}
       />

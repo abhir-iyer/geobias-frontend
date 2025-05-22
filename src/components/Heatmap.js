@@ -20,31 +20,25 @@ export default function Heatmap({ data, layoutProps = {}, configProps = {} }) {
   return (
     <div style={{ width: '100%', height: 'auto' }}>
       <Plot
-        data={[
-          {
-            z,
-            x: targets,
-            y: sources,
-            type: 'heatmap',
-            colorscale: 'RdBu',
-            reversescale: true,
-            zmid: 0,
-            hoverongaps: false
-          }
-        ]}
+        data={[{
+          z,
+          x: targets,
+          y: sources,
+          type: 'heatmap',
+          colorscale: 'RdBu',
+          reversescale: true,
+          zmid: 0,
+        }]}
         layout={{
-          autosize: true,
-          margin: { t: 30, b: 40, l: 100, r: 40 },
-          hovermode: 'closest',
-          paper_bgcolor: '#ffffff',
-          plot_bgcolor: '#ffffff',
-          ...layoutProps
+          ...layoutProps,
+          margin: { t: 30, b: 40, l: 60, r: 10 },
+          height: 500,
+          paper_bgcolor: '#fff',
+          plot_bgcolor: '#fff'
         }}
         config={{
           displayModeBar: false,
-          responsive: true,
           scrollZoom: false,
-          staticPlot: false,
           ...configProps
         }}
         style={{ width: '100%', height: '100%' }}
