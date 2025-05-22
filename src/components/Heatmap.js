@@ -1,15 +1,11 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
 import createPlotlyComponent from 'react-plotly.js/factory';
 import Plotly from 'plotly.js-basic-dist';
 
 const Plot = createPlotlyComponent(Plotly);
-const DynamicPlot = dynamic(() => Promise.resolve(Plot), { ssr: false });
 
 export default function Heatmap({ data, layoutProps = {}, configProps = {} }) {
   if (!data || data.length === 0) return null;
-
-  console.log("📊 Heatmap received data:", data);
 
   const pivot = {};
   data.forEach(row => {
@@ -26,7 +22,7 @@ export default function Heatmap({ data, layoutProps = {}, configProps = {} }) {
 
   return (
     <div style={{ width: '100%', height: 'auto' }}>
-      <DynamicPlot
+      <Plot
         data={[{
           z,
           x: targets,
