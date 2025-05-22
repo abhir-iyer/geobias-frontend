@@ -1,6 +1,4 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
-const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
 
 export default function Heatmap({ data }) {
   const pivot = {};
