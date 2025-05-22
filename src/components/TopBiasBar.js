@@ -1,4 +1,5 @@
 import React from 'react';
+import Plot from 'react-plotly.js';
 
 export default function TopBiasBar({ data }) {
   const sorted = [...data].sort((a, b) => Math.abs(b.avg_sentiment) - Math.abs(a.avg_sentiment));
