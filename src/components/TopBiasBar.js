@@ -1,5 +1,8 @@
 import React from 'react';
-import Plot from 'react-plotly.js';
+import createPlotlyComponent from 'react-plotly.js/factory';
+import Plotly from 'plotly.js-basic-dist';
+
+const Plot = createPlotlyComponent(Plotly);
 
 export default function TopBiasBar({ data, layoutProps = {}, configProps = {} }) {
   if (!data || data.length === 0) return null;
