@@ -1,17 +1,12 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
 import createPlotlyComponent from 'react-plotly.js/factory';
 import Plotly from 'plotly.js-basic-dist';
 
 const Plot = createPlotlyComponent(Plotly);
-const DynamicPlot = dynamic(() => Promise.resolve(Plot), { ssr: false });
 
 export default function ChoroplethMap({ data, layoutProps = {}, configProps = {} }) {
   if (!data || data.length === 0) return null;
 
-  console.log("📊 ChoroplethMap received data:", data);
-
-  // Aggregate sentiment per target country
   const byTarget = {};
   data.forEach(row => {
     const country = row.target_country;
@@ -32,7 +27,7 @@ export default function ChoroplethMap({ data, layoutProps = {}, configProps = {}
 
   return (
     <div style={{ width: '100%', height: 'auto' }}>
-      <DynamicPlot
+      <Plot
         data={[{
           type: 'choropleth',
           locationmode: 'country names',
@@ -56,8 +51,8 @@ export default function ChoroplethMap({ data, layoutProps = {}, configProps = {}
         }}
         config={{
           displayModeBar: false,
-          responsive: true,
           scrollZoom: false,
+          responsive: true,
           ...configProps
         }}
         style={{ width: '100%', height: '100%' }}
