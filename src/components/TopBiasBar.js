@@ -1,6 +1,4 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
-const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
 
 export default function TopBiasBar({ data }) {
   const sorted = [...data].sort((a, b) => Math.abs(b.avg_sentiment) - Math.abs(a.avg_sentiment));
