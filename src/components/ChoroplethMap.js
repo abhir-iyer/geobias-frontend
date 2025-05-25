@@ -6,14 +6,9 @@ const Plot = createPlotlyComponent(Plotly);
 
 export default function ChoroplethMap({ data, layoutProps = {}, configProps = {} }) {
   const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    setReady(true);
-  }, []);
-
+  useEffect(() => setReady(true), []);
   if (!ready || !data || data.length === 0) return null;
 
-  // Aggregate sentiment per target country
   const byTarget = {};
   data.forEach(row => {
     const country = row.target_country;
@@ -60,9 +55,10 @@ export default function ChoroplethMap({ data, layoutProps = {}, configProps = {}
           plot_bgcolor: '#fff'
         }}
         config={{
-          displayModeBar: false,
-          scrollZoom: true,
+          displayModeBar: true,
           responsive: true,
+          staticPlot: false,
+          scrollZoom: true,
           ...configProps
         }}
         style={{ width: '100%', height: '100%' }}
