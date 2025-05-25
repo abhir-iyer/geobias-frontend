@@ -56,6 +56,14 @@ export default function Heatmap({ data, layoutProps = {}, configProps = {} }) {
             automargin: true,
             tickfont: { size: 10 }
           },
+          hoverlabel: {
+            bgcolor: '#FFF',
+            font: {
+              color: '#000',
+              size: 12,
+              family: 'Inter, sans-serif'
+            }
+          },
           paper_bgcolor: '#fff',
           plot_bgcolor: '#fff'
         }}
