@@ -56,11 +56,11 @@ export default function ChoroplethMap({ data, layoutProps = {}, configProps = {}
           plot_bgcolor: '#fff',
           hoverlabel: {
             bgcolor: '#FFF',
-            font: { color: '#000', size: 12 }
+            font: { color: '#000', size: 12, family: 'Inter, sans-serif' }
           }
         }}
         config={{
-          displayModeBar: false,
+          displayModeBar: true,
           responsive: true,
           scrollZoom: false,
           ...configProps
