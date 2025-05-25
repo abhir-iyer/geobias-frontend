@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import createPlotlyComponent from 'react-plotly.js/factory';
 import Plotly from 'plotly.js-dist';
-import countries from 'i18n-iso-countries';
-countries.registerLocale(require('i18n-iso-countries/langs/en.json'));
 
 const Plot = createPlotlyComponent(Plotly);
 
@@ -29,17 +27,14 @@ export default function ChoroplethMap({ data, layoutProps = {}, configProps = {}
   const hoverText = countryList.map(
     c => `${c}<br>Avg Sentiment: ${(byTarget[c].total / byTarget[c].count).toFixed(3)}`
   );
-  const countryListIso3 = countryList.map(name =>
-    countries.getAlpha3Code(name, 'en') || name
-  );
 
   return (
     <div style={{ width: '100%', height: 'auto' }}>
       <Plot
         data={[{
           type: 'choropleth',
-          locationmode: 'ISO-3',
-          locations: countryListIso3,
+          locationmode: 'country names',
+          locations: countryList,
           z: avgSentiment,
           text: hoverText,
           hoverinfo: 'text',
@@ -61,11 +56,11 @@ export default function ChoroplethMap({ data, layoutProps = {}, configProps = {}
           plot_bgcolor: '#fff',
           hoverlabel: {
             bgcolor: '#FFF',
-            font: { color: '#000', size: 12, family: 'Inter, sans-serif' }
+            font: { color: '#000', size: 12 }
           }
         }}
         config={{
-          displayModeBar: true,
+          displayModeBar: false,
           responsive: true,
           scrollZoom: false,
           ...configProps
