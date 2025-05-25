@@ -27,21 +27,19 @@ export default function Heatmap({ data, layoutProps = {}, configProps = {} }) {
   const z = sources.map(src => targets.map(tgt => pivot[src]?.[tgt] ?? null));
 
   return (
-    <div style={{ width: '100%', height: 'auto' }}>
+    <div style={{ width: '100%', height: 'auto', overflowX: 'auto' }}>
       <Plot
-        data={[
-          {
-            z,
-            x: targets,
-            y: sources,
-            type: 'heatmap',
-            colorscale: 'RdBu',
-            reversescale: true,
-            zmid: 0,
-            hoverongaps: false,
-            hovertemplate: '%{y} → %{x}<br>Sentiment: %{z:.3f}<extra></extra>'
-          }
-        ]}
+        data={[{
+          z,
+          x: targets,
+          y: sources,
+          type: 'heatmap',
+          colorscale: 'RdBu',
+          reversescale: true,
+          zmid: 0,
+          hoverongaps: false,
+          hovertemplate: '%{y} → %{x}<br>Sentiment: %{z:.3f}<extra></extra>'
+        }]}
         layout={{
           ...layoutProps,
           margin: { t: 20, b: 120, l: 120, r: 10 },
