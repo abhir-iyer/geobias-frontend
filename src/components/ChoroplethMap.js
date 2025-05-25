@@ -7,7 +7,10 @@ const Plot = createPlotlyComponent(Plotly);
 export default function ChoroplethMap({ data, layoutProps = {}, configProps = {} }) {
   const [ready, setReady] = useState(false);
 
-  useEffect(() => setReady(true), []);
+  useEffect(() => {
+    setReady(true);
+  }, []);
+
   if (!ready || !data || data.length === 0) return null;
 
   const byTarget = {};
@@ -48,6 +51,8 @@ export default function ChoroplethMap({ data, layoutProps = {}, configProps = {}
           geo: {
             showframe: false,
             showcoastlines: false,
+            showcountries: true,
+            countrycolor: 'rgba(0,0,0,0.1)',
             projection: { type: 'natural earth' }
           },
           margin: { t: 10, b: 10, l: 0, r: 0 },
@@ -55,14 +60,15 @@ export default function ChoroplethMap({ data, layoutProps = {}, configProps = {}
           paper_bgcolor: '#fff',
           plot_bgcolor: '#fff',
           hoverlabel: {
-            bgcolor: '#FFF',
-            font: { color: '#000', size: 12 }
+            bgcolor: '#fff',
+            bordercolor: '#ccc',
+            font: { color: '#000', size: 12, family: 'Inter, sans-serif' }
           }
         }}
         config={{
-          displayModeBar: false,
-          responsive: true,
+          displayModeBar: true,
           scrollZoom: false,
+          responsive: true,
           ...configProps
         }}
         style={{ width: '100%', height: '100%' }}
