@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import createPlotlyComponent from 'react-plotly.js/factory';
-import Plotly from 'plotly.js-basic-dist';
+import Plotly from 'plotly.js-basic-dist-min';
 
 const Plot = createPlotlyComponent(Plotly);
 
 export default function Heatmap({ data, layoutProps = {}, configProps = {} }) {
-  if (!data || data.length === 0) return null;
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    setReady(true);
+  }, []);
+
+  if (!ready || !data || data.length === 0) return null;
 
   const pivot = {};
   data.forEach(row => {
@@ -23,19 +29,24 @@ export default function Heatmap({ data, layoutProps = {}, configProps = {} }) {
   return (
     <div style={{ width: '100%', height: 'auto' }}>
       <Plot
-        data={[{
-          z,
-          x: targets,
-          y: sources,
-          type: 'heatmap',
-          colorscale: 'RdBu',
-          reversescale: true,
-          zmid: 0,
-        }]}
+        data={[
+          {
+            z,
+            x: targets,
+            y: sources,
+            type: 'heatmap',
+            colorscale: 'RdBu',
+            reversescale: true,
+            zmid: 0,
+            hoverongaps: false,
+            hovertemplate: '%{y} → %{x}<br>Sentiment: %{z:.3f}<extra></extra>'
+          }
+        ]}
         layout={{
           ...layoutProps,
-          margin: { t: 30, b: 40, l: 60, r: 10 },
+          margin: { t: 20, b: 40, l: 70, r: 10 },
           height: 500,
+          autosize: true,
           paper_bgcolor: '#fff',
           plot_bgcolor: '#fff'
         }}
