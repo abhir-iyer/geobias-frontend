@@ -167,3 +167,11 @@ iframe {
     font-size: 2rem;
   }
 }
+
+.loader {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 3rem;
+  color: #666;
+  font-style: italic;
+}
