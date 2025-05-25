@@ -44,11 +44,20 @@ export default function Heatmap({ data, layoutProps = {}, configProps = {} }) {
         ]}
         layout={{
           ...layoutProps,
-          margin: { t: 20, b: 40, l: 70, r: 10 },
+          margin: { t: 30, b: 60, l: 80, r: 30 },
           height: 500,
-          autosize: true,
+          xaxis: {
+            title: 'Target Country',
+            tickangle: -45,
+            automargin: true
+          },
+          yaxis: {
+            title: 'Source Country',
+            automargin: true
+          },
           paper_bgcolor: '#fff',
-          plot_bgcolor: '#fff'
+          plot_bgcolor: '#fff',
+          autosize: true
         }}
         config={{
           displayModeBar: false,
