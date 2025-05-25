@@ -19,8 +19,7 @@ function App() {
   const [target, setTarget] = useState('All');
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // No BASE_URL needed due to Vercel proxying
-  const API_BASE = '/api';
+  const API_BASE = '/api'; // Proxy path for Vercel
 
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
@@ -45,7 +44,7 @@ function App() {
   }, [source, target]);
 
   const commonLayoutProps = {
-    hovermode: false,
+    hovermode: 'closest',
     transition: { duration: 0 },
     hoverlabel: {
       bgcolor: '#FFF',
@@ -55,9 +54,10 @@ function App() {
   };
 
   const commonConfigProps = {
-    displayModeBar: false,
-    staticPlot: true,
-    responsive: true
+    displayModeBar: true,
+    staticPlot: false,      // ✅ Interactivity ON
+    responsive: true,
+    scrollZoom: false       // Enable if you want zooming via scroll
   };
 
   return (
