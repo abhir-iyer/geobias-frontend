@@ -18,9 +18,9 @@ function App() {
   const [source, setSource] = useState('All');
   const [target, setTarget] = useState('All');
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [loading, setLoading] = useState(true);
 
-  const BASE_URL = 'https://geobias-app.onrender.com';
+  // No BASE_URL needed due to Vercel proxying
+  const API_BASE = '/api';
 
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
@@ -33,19 +33,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/api/countries`)
-      .then(res => {
-        setCountries(res.data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Failed to load countries", err);
-        setLoading(false);
-      });
+    axios.get(`${API_BASE}/countries`)
+      .then(res => setCountries(res.data))
+      .catch(err => console.error("Failed to load countries", err));
   }, []);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/api/filter/${source}/${target}`)
+    axios.get(`${API_BASE}/filter/${source}/${target}`)
       .then(res => setMatrix(res.data))
       .catch(err => console.error("Failed to load matrix", err));
   }, [source, target]);
@@ -78,53 +72,47 @@ function App() {
       </div>
 
       <div className="container">
-        {loading ? (
-          <div className="loader">🌍 Waking up the GeoBias server... Please wait a few seconds.</div>
-        ) : (
-          <>
-            <div className="section lift-on-hover" data-aos="fade-up">
-              <h2>🔍 Filter Country Pairs</h2>
-              <FilterPanel
-                sources={countries.sources}
-                targets={countries.targets}
-                source={source}
-                target={target}
-                setSource={setSource}
-                setTarget={setTarget}
-              />
-            </div>
+        <div className="section lift-on-hover" data-aos="fade-up">
+          <h2>🔍 Filter Country Pairs</h2>
+          <FilterPanel
+            sources={countries.sources}
+            targets={countries.targets}
+            source={source}
+            target={target}
+            setSource={setSource}
+            setTarget={setTarget}
+          />
+        </div>
 
-            <div className="section lift-on-hover" data-aos="fade-up">
-              <h2>🌍 Sentiment Toward Target Countries (Choropleth)</h2>
-              <p className="insight">See which countries are viewed positively or negatively around the world.</p>
-              <ChoroplethMap data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
-            </div>
+        <div className="section lift-on-hover" data-aos="fade-up">
+          <h2>🌍 Sentiment Toward Target Countries (Choropleth)</h2>
+          <p className="insight">See which countries are viewed positively or negatively around the world.</p>
+          <ChoroplethMap data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
+        </div>
 
-            <div className="section lift-on-hover" data-aos="fade-up">
-              <h2>🌡️ Source → Target Country Sentiment Matrix (Heatmap)</h2>
-              <p className="insight">Hover to explore average sentiment between source and target countries.</p>
-              <Heatmap data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
-            </div>
+        <div className="section lift-on-hover" data-aos="fade-up">
+          <h2>🌡️ Source → Target Country Sentiment Matrix (Heatmap)</h2>
+          <p className="insight">Hover to explore average sentiment between source and target countries.</p>
+          <Heatmap data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
+        </div>
 
-            <div className="section lift-on-hover" data-aos="fade-up">
-              <h2>📊 Top 10 Most Biased Country Pairs</h2>
-              <p className="insight">Discover the country pairs with the most polarized sentiment in the dataset.</p>
-              <TopBiasBar data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
-            </div>
+        <div className="section lift-on-hover" data-aos="fade-up">
+          <h2>📊 Top 10 Most Biased Country Pairs</h2>
+          <p className="insight">Discover the country pairs with the most polarized sentiment in the dataset.</p>
+          <TopBiasBar data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
+        </div>
 
-            <div className="section lift-on-hover" data-aos="fade-up">
-              <h2>🕸️ Directed News Sentiment Network</h2>
-              <p className="insight">Visualize the sentiment-driven relationships between countries in a network graph.</p>
-              <NetworkGraph layoutProps={commonLayoutProps} configProps={commonConfigProps} />
-            </div>
+        <div className="section lift-on-hover" data-aos="fade-up">
+          <h2>🕸️ Directed News Sentiment Network</h2>
+          <p className="insight">Visualize the sentiment-driven relationships between countries in a network graph.</p>
+          <NetworkGraph layoutProps={commonLayoutProps} configProps={commonConfigProps} />
+        </div>
 
-            <div className="section lift-on-hover" data-aos="fade-up">
-              <h2>🔄 Country-to-Country Sentiment Flow (Sankey)</h2>
-              <p className="insight">Track the directional sentiment flows between nations using a Sankey diagram.</p>
-              <SankeyDiagram layoutProps={commonLayoutProps} configProps={commonConfigProps} />
-            </div>
-          </>
-        )}
+        <div className="section lift-on-hover" data-aos="fade-up">
+          <h2>🔄 Country-to-Country Sentiment Flow (Sankey)</h2>
+          <p className="insight">Track the directional sentiment flows between nations using a Sankey diagram.</p>
+          <SankeyDiagram layoutProps={commonLayoutProps} configProps={commonConfigProps} />
+        </div>
       </div>
 
       {/* Back to Top Button */}
