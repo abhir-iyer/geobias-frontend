@@ -1,11 +1,11 @@
 {
-  "name": "geobias-frontend",
-  "version": "1.0.0",
+  "name": "frontend",
+  "version": "0.1.0",
   "private": true,
   "dependencies": {
     "aos": "^2.3.4",
     "axios": "^1.9.0",
-    "plotly.js-basic-dist-min": "^2.27.1",
+    "plotly.js-dist": "^2.35.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-plotly.js": "^2.6.0",
