@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import createPlotlyComponent from 'react-plotly.js/factory';
-import Plotly from 'plotly.js-basic-dist';
+import Plotly from 'plotly.js-basic-dist-min';
 
 const Plot = createPlotlyComponent(Plotly);
 
 export default function ChoroplethMap({ data, layoutProps = {}, configProps = {} }) {
-  if (!data || data.length === 0) return null;
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    // Ensures Plot renders after mount
+    setReady(true);
+  }, []);
+
+  if (!ready || !data || data.length === 0) return null;
 
   const byTarget = {};
   data.forEach(row => {
@@ -42,9 +49,12 @@ export default function ChoroplethMap({ data, layoutProps = {}, configProps = {}
         }]}
         layout={{
           ...layoutProps,
-          geo: { showframe: false },
+          geo: {
+            showframe: false,
+            showcoastlines: false,
+            projection: { type: 'natural earth' }
+          },
           margin: { t: 10, b: 10, l: 0, r: 0 },
-          autosize: true,
           height: 500,
           paper_bgcolor: '#fff',
           plot_bgcolor: '#fff'
