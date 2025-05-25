@@ -6,7 +6,11 @@ const Plot = createPlotlyComponent(Plotly);
 
 export default function Heatmap({ data, layoutProps = {}, configProps = {} }) {
   const [ready, setReady] = useState(false);
-  useEffect(() => setReady(true), []);
+
+  useEffect(() => {
+    setReady(true);
+  }, []);
+
   if (!ready || !data || data.length === 0) return null;
 
   const pivot = {};
@@ -33,20 +37,26 @@ export default function Heatmap({ data, layoutProps = {}, configProps = {} }) {
           colorscale: 'RdBu',
           reversescale: true,
           zmid: 0,
+          hoverongaps: false,
           hovertemplate: '%{y} → %{x}<br>Sentiment: %{z:.3f}<extra></extra>'
         }]}
         layout={{
           ...layoutProps,
           margin: { t: 20, b: 40, l: 70, r: 10 },
           height: 500,
+          autosize: true,
           paper_bgcolor: '#fff',
-          plot_bgcolor: '#fff'
+          plot_bgcolor: '#fff',
+          hoverlabel: {
+            bgcolor: '#fff',
+            bordercolor: '#ccc',
+            font: { color: '#000', size: 12, family: 'Inter, sans-serif' }
+          }
         }}
         config={{
           displayModeBar: true,
+          scrollZoom: false,
           responsive: true,
-          staticPlot: false,
-          scrollZoom: true,
           ...configProps
         }}
         style={{ width: '100%', height: '100%' }}
