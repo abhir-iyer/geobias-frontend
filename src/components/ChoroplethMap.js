@@ -8,12 +8,12 @@ export default function ChoroplethMap({ data, layoutProps = {}, configProps = {}
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    // Ensures Plot renders after mount
     setReady(true);
   }, []);
 
   if (!ready || !data || data.length === 0) return null;
 
+  // Aggregate sentiment per target country
   const byTarget = {};
   data.forEach(row => {
     const country = row.target_country;
@@ -61,7 +61,7 @@ export default function ChoroplethMap({ data, layoutProps = {}, configProps = {}
         }}
         config={{
           displayModeBar: false,
-          scrollZoom: false,
+          scrollZoom: true,
           responsive: true,
           ...configProps
         }}
