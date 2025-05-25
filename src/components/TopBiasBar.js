@@ -6,7 +6,11 @@ const Plot = createPlotlyComponent(Plotly);
 
 export default function TopBiasBar({ data, layoutProps = {}, configProps = {} }) {
   const [ready, setReady] = useState(false);
-  useEffect(() => setReady(true), []);
+
+  useEffect(() => {
+    setReady(true);
+  }, []);
+
   if (!ready || !data || data.length === 0) return null;
 
   const sorted = [...data].sort((a, b) => Math.abs(b.avg_sentiment) - Math.abs(a.avg_sentiment));
@@ -27,16 +31,25 @@ export default function TopBiasBar({ data, layoutProps = {}, configProps = {} })
         }]}
         layout={{
           ...layoutProps,
-          margin: { t: 20, b: 70, l: 60, r: 10 },
+          margin: { t: 20, b: 80, l: 60, r: 10 },
           height: 400,
+          autosize: true,
           paper_bgcolor: '#fff',
-          plot_bgcolor: '#fff'
+          plot_bgcolor: '#fff',
+          hoverlabel: {
+            bgcolor: '#fff',
+            bordercolor: '#ccc',
+            font: { color: '#000', size: 12, family: 'Inter, sans-serif' }
+          },
+          xaxis: {
+            tickangle: -30,
+            automargin: true
+          }
         }}
         config={{
           displayModeBar: true,
+          scrollZoom: false,
           responsive: true,
-          staticPlot: false,
-          scrollZoom: true,
           ...configProps
         }}
         style={{ width: '100%', height: '100%' }}
