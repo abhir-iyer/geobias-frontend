@@ -6,53 +6,37 @@ const Plot = createPlotlyComponent(Plotly);
 
 export default function TopBiasBar({ data, layoutProps = {}, configProps = {} }) {
   const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    setReady(true);
-  }, []);
-
+  useEffect(() => setReady(true), []);
   if (!ready || !data || data.length === 0) return null;
 
   const sorted = [...data].sort((a, b) => Math.abs(b.avg_sentiment) - Math.abs(a.avg_sentiment));
   const top10 = sorted.slice(0, 10);
 
-  const labels = top10.map(d => `${d.source_country} → ${d.target_country}`);
-  const sentiments = top10.map(d => d.avg_sentiment);
-
   return (
     <div style={{ width: '100%', height: 'auto' }}>
       <Plot
         data={[{
-          x: labels,
-          y: sentiments,
+          x: top10.map(d => `${d.source_country} → ${d.target_country}`),
+          y: top10.map(d => d.avg_sentiment),
           type: 'bar',
           marker: {
-            color: sentiments.map(val => val >= 0 ? '#4caf50' : '#f44336')
+            color: top10.map(d => d.avg_sentiment >= 0 ? '#4caf50' : '#f44336')
           },
-          text: sentiments.map(val => `Sentiment: ${val.toFixed(3)}`),
+          text: top10.map(d => `Sentiment: ${d.avg_sentiment.toFixed(3)}`),
           hoverinfo: 'text+x+y'
         }]}
         layout={{
           ...layoutProps,
-          margin: { t: 30, b: 100, l: 60, r: 10 },
-          height: 420,
-          autosize: true,
+          margin: { t: 20, b: 70, l: 60, r: 10 },
+          height: 400,
           paper_bgcolor: '#fff',
-          plot_bgcolor: '#fff',
-          xaxis: {
-            tickangle: -45,
-            tickfont: { size: 11 },
-            automargin: true
-          },
-          yaxis: {
-            title: 'Avg Sentiment',
-            automargin: true
-          }
+          plot_bgcolor: '#fff'
         }}
         config={{
-          displayModeBar: false,
-          scrollZoom: false,
+          displayModeBar: true,
           responsive: true,
+          staticPlot: false,
+          scrollZoom: true,
           ...configProps
         }}
         style={{ width: '100%', height: '100%' }}
