@@ -12,11 +12,9 @@ html, body, #root, .App {
   margin: 0 !important;
   padding: 0 !important;
 }
-
-/* ===== Hero Section ===== */
 .hero {
   background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fc 100%);
-  padding: 2rem 0 3rem;
+  padding: 2rem 0 2rem;
   border-bottom: 1px solid #dce4ef;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
   text-align: center;
@@ -53,6 +51,7 @@ html, body, #root, .App {
   background: #ffffff;
   border-radius: 16px;
   padding: 2rem;
+  margin-top: 0rem;
   margin-bottom: 2.5rem;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
   overflow: visible;
@@ -60,7 +59,7 @@ html, body, #root, .App {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Lift effect for desktop only */
+/* Desktop lift effect only */
 @media (hover: hover) {
   .section:hover {
     transform: translateY(-8px);
@@ -91,6 +90,12 @@ h2 {
 }
 
 /* ===== Dropdowns ===== */
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
 select {
   width: 100%;
   background: linear-gradient(135deg, #ffffff 0%, #f2f6ff 100%);
@@ -105,6 +110,10 @@ select {
 
 select:hover {
   border-color: #2b7de9;
+}
+
+.filter-form-group {
+  margin-bottom: 1rem;
 }
 
 /* ===== Plot Containers ===== */
@@ -159,7 +168,7 @@ iframe, .plotly-graph-div {
   visibility: visible;
 }
 
-/* ===== Mobile Optimizations ===== */
+/* ===== Mobile Optimization ===== */
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
@@ -175,16 +184,16 @@ iframe, .plotly-graph-div {
   }
 
   .intro {
-    padding: 0 1rem;
     font-size: 1rem;
-  }
-
-  select {
-    font-size: 0.95rem;
+    padding: 0 1rem;
   }
 
   h2 {
     font-size: 1.25rem;
+  }
+
+  select {
+    font-size: 0.95rem;
   }
 
   .back-to-top {
@@ -193,7 +202,7 @@ iframe, .plotly-graph-div {
   }
 }
 
-/* ===== Loader (if used) ===== */
+/* ===== Loader ===== */
 .loader {
   text-align: center;
   font-size: 1.2rem;
