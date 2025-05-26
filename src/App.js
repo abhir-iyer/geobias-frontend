@@ -9,6 +9,7 @@ import Heatmap from './components/Heatmap';
 import TopBiasBar from './components/TopBiasBar';
 import NetworkGraph from './components/NetworkGraph';
 import SankeyDiagram from './components/SankeyDiagram';
+import Loader from './components/Loader'; // ✅ Add this component
 
 import './App.css';
 
@@ -18,8 +19,9 @@ function App() {
   const [source, setSource] = useState('All');
   const [target, setTarget] = useState('All');
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const API_BASE = '/api'; // Proxy path for Vercel
+  const API_BASE = '/api'; // For Vercel proxy
 
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
@@ -38,9 +40,16 @@ function App() {
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     axios.get(`${API_BASE}/filter/${source}/${target}`)
-      .then(res => setMatrix(res.data))
-      .catch(err => console.error("Failed to load matrix", err));
+      .then(res => {
+        setMatrix(res.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to load matrix", err);
+        setLoading(false);
+      });
   }, [source, target]);
 
   const commonLayoutProps = {
@@ -55,9 +64,9 @@ function App() {
 
   const commonConfigProps = {
     displayModeBar: true,
-    staticPlot: false,      // ✅ Interactivity ON
+    staticPlot: false,
     responsive: true,
-    scrollZoom: false       // Enable if you want zooming via scroll
+    scrollZoom: false
   };
 
   return (
@@ -84,23 +93,31 @@ function App() {
           />
         </div>
 
-        <div className="section lift-on-hover" data-aos="fade-up">
-          <h2>🌍 Sentiment Toward Target Countries (Choropleth)</h2>
-          <p className="insight">See which countries are viewed positively or negatively around the world.</p>
-          <ChoroplethMap data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
-        </div>
+        {loading ? (
+          <div className="section" data-aos="fade-up">
+            <Loader />
+          </div>
+        ) : (
+          <>
+            <div className="section lift-on-hover" data-aos="fade-up">
+              <h2>🌍 Sentiment Toward Target Countries (Choropleth)</h2>
+              <p className="insight">See which countries are viewed positively or negatively around the world.</p>
+              <ChoroplethMap data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
+            </div>
 
-        <div className="section lift-on-hover" data-aos="fade-up">
-          <h2>🌡️ Source → Target Country Sentiment Matrix (Heatmap)</h2>
-          <p className="insight">Hover to explore average sentiment between source and target countries.</p>
-          <Heatmap data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
-        </div>
+            <div className="section lift-on-hover" data-aos="fade-up">
+              <h2>🌡️ Source → Target Country Sentiment Matrix (Heatmap)</h2>
+              <p className="insight">Hover to explore average sentiment between source and target countries.</p>
+              <Heatmap data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
+            </div>
 
-        <div className="section lift-on-hover" data-aos="fade-up">
-          <h2>📊 Top 10 Most Biased Country Pairs</h2>
-          <p className="insight">Discover the country pairs with the most polarized sentiment in the dataset.</p>
-          <TopBiasBar data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
-        </div>
+            <div className="section lift-on-hover" data-aos="fade-up">
+              <h2>📊 Top 10 Most Biased Country Pairs</h2>
+              <p className="insight">Discover the country pairs with the most polarized sentiment in the dataset.</p>
+              <TopBiasBar data={matrix} layoutProps={commonLayoutProps} configProps={commonConfigProps} />
+            </div>
+          </>
+        )}
 
         <div className="section lift-on-hover" data-aos="fade-up">
           <h2>🕸️ Directed News Sentiment Network</h2>
@@ -115,7 +132,6 @@ function App() {
         </div>
       </div>
 
-      {/* Back to Top Button */}
       <button
         className={`back-to-top ${showScrollTop ? 'visible' : 'hidden'}`}
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -123,7 +139,6 @@ function App() {
         ↑ Back to Top
       </button>
 
-      {/* Footer */}
       <footer className="footer">
         <p>Built by Abhir Iyer · GeoBias Project · 2025</p>
       </footer>
